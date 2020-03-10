@@ -1,0 +1,138 @@
+<!--NOTE: LOCAL COOKIES ONLY WORK ON FIREFOX, CHROME MUST BE A PUBLISHED WEBSITE -->
+
+<html>
+	<style>
+		#content-div{
+			text-align:center;
+			font-family:sans-serif;
+			margin-top:20%;
+		}
+		#cookieField{
+			height:5%;
+			width:20%;
+			font-size:1.5vw;
+			padding-left:5px;
+			margin-top:1%;
+
+		}
+		#cookieButton{
+			margin-top:2%;
+			width:20%;
+			height:10%;
+			border-radius:15px;
+			font-size:2vw;
+			background-color:#ff5959;
+			color:white;
+			border:0;
+		}
+		#cookieButton:hover{
+			opacity:0.8;
+			cursor:pointer;
+		}
+
+				/* The snackbar - position it at the bottom and in the middle of the screen */
+		#snackbar {
+		  visibility: hidden; /* Hidden by default. Visible on click */
+		  min-width: 250px; /* Set a default minimum width */
+		  margin-left: -125px; /* Divide value of min-width by 2 */
+		  background-color: #333; /* Black background color */
+		  color: #fff; /* White text color */
+		  text-align: center; /* Centered text */
+		  border-radius: 2px; /* Rounded borders */
+		  padding: 16px; /* Padding */
+		  position: fixed; /* Sit on top of the screen */
+		  z-index: 1; /* Add a z-index if needed */
+		  left: 50%; /* Center the snackbar */
+		  bottom: 30px; /* 30px from the bottom */
+		  font-family:sans-serif;
+		}
+
+		/* Show the snackbar when clicking on a button (class added with JavaScript) */
+		#snackbar.show {
+		  visibility: visible; /* Show the snackbar */
+		  /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+		  However, delay the fade out process for 2.5 seconds */
+		  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+		  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+		}
+
+		/* Animations to fade the snackbar in and out */
+		@-webkit-keyframes fadein {
+		  from {bottom: 0; opacity: 0;}
+		  to {bottom: 30px; opacity: 1;}
+		}
+
+		@keyframes fadein {
+		  from {bottom: 0; opacity: 0;}
+		  to {bottom: 30px; opacity: 1;}
+		}
+
+		@-webkit-keyframes fadeout {
+		  from {bottom: 30px; opacity: 1;}
+		  to {bottom: 0; opacity: 0;}
+		}
+
+		@keyframes fadeout {
+		  from {bottom: 30px; opacity: 1;}
+		  to {bottom: 0; opacity: 0;}
+		}
+	</style>
+
+	<script>
+	function setCookie(cookieName, cookieValue, numDays) {
+		var date = new Date();
+		date.setTime(date.getTime() + (numDays * 24 * 60 * 60 * 1000));
+		var expires = date.toUTCString();
+
+		//TODO: Save the cookie
+		document.cookie = cookieName + "=" + cookieValue + ";" + "expires=" + date + ";";
+	}
+
+	function getCookie(cookieName) {
+		var name = cookieName + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for(var i = 0; i < ca.length; i++) {
+		var c = ca[i];
+		while (c.charAt(0) == ' ') {
+		  c = c.substring(1);
+		}
+		if (c.indexOf(name) == 0) {
+		  return c.substring(name.length, c.length);
+		}
+		}
+		return "";
+	}
+
+	function showSnackBar() {
+		var x = document.getElementById("snackbar");
+		x.className = "show";
+		setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+	}
+
+	function alertCookie() {
+		if (getCookie("cookie") != "") {
+			var cookie=getCookie("cookie");
+			alert("You like " + cookie + " cookies.");
+		}
+		//Reset user input box when page loads
+		document.getElementById("cookieField").value = "";
+	}
+	</script>
+
+	<body onload="alertCookie()">
+		<div id="content-div">
+			<label>Please enter a type of cookie: </label>
+			<br />
+			<input id="cookieField">
+			<br />
+
+			<!-- TODO: Set the cookie on click -->
+			<button onclick="showSnackBar(); setCookie('cookie', document.getElementById('cookieField').value, 30);" id="cookieButton">Set Cookie</button>
+
+		</div>
+		<div id="snackbar">Success! Delicious... choice...</div>
+
+
+	</body>
+</html>
